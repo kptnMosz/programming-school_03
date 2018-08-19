@@ -91,7 +91,7 @@ public class Solution {
     private static ArrayList<Solution> loadList(String query) throws SQLException {
         Connection conn = DbUtil.getConn();
         ArrayList<Solution> solutions = new ArrayList<>();
-        PreparedStatement sql = conn.prepareStatement("SELECT id, created, updated, description, excercise_id, user_id FROM solutions;");
+        PreparedStatement sql = conn.prepareStatement(query);
         ResultSet rs = sql.executeQuery();
         while (rs.next()) {
             Solution solution = new Solution();
@@ -107,22 +107,28 @@ public class Solution {
 
     }
 
-    public static ArrayList<Solution> loadAllSolutions() throws SQLException {
+    public static ArrayList<Solution> loadAll() throws SQLException {
         Connection conn = DbUtil.getConn();
         String query = "SELECT id, created, updated, description, excercise_id, user_id FROM solutions;";
+        return loadList(query);
+    }
+
+    public static ArrayList<Solution> loadAll(int limit) throws SQLException {
+        Connection conn = DbUtil.getConn();
+        String query = "SELECT id, created, updated, description, excercise_id, user_id FROM solutions ORDER BY created LIMIT " + limit + ";";
         return loadList(query);
     }
 
     public static ArrayList<Solution> loadAllByUserId(int userId) throws SQLException {
         Connection conn = DbUtil.getConn();
         String query = "SELECT id, created, updated, description, excercise_id, user_id FROM solutions WHERE user_id=" + userId + ";";
-        return loadList( query);
+        return loadList(query);
     }
 
-    public static ArrayList<Solution> loadAllByExerciseId( int exId) throws SQLException {
+    public static ArrayList<Solution> loadAllByExerciseId(int exId) throws SQLException {
         Connection conn = DbUtil.getConn();
         String query = "SELECT id, created, updated, description, excercise_id, user_id FROM solutions WHERE excercise_id=" + exId + " ORDER BY created;";
-        return loadList( query);
+        return loadList(query);
     }
 
 
